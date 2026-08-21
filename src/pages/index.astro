@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import VideoStats from '../components/VideoStats.astro';
 
-// Dữ liệu video nổi bật (Đã thêm ID)
+// Dữ liệu video nổi bật
 const featuredClips = {
   mostViewed: {
     title: "REAL LIFE IN INDONESIA! - STUNNING Women, BAJAU Sea Nomads & 17,000 ISLANDS on the Ring on Fire!",
@@ -22,7 +22,7 @@ const featuredClips = {
   }
 };
 
-// DỮ LIỆU PHẦN "MORE ADVENTURES" (Đã thêm ID)
+// DỮ LIỆU PHẦN "MORE ADVENTURES"
 const otherVideos = [
   {
     title: "REAL LIFE IN CURAÇAO! - The “USELESS” Dutch Island of BEAUTIFUL Women That Fooled the World!",
@@ -50,7 +50,7 @@ const otherVideos = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Planet Explorer - Official Blog & Channel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Đã xóa script Tailwind CDN bị lỗi CORS ở đây -->
     <style>
       @keyframes landscapeZoom { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
       .animate-zoom { animation: landscapeZoom 15s ease-in-out infinite; }
@@ -85,6 +85,7 @@ const otherVideos = [
         </div>
       </section>
 
+      <!-- Featured Highlights -->
       <section class="max-w-5xl mx-auto px-6 py-8">
         <h2 class="text-2xl font-bold mb-6 border-l-4 border-blue-500 pl-3">Featured Highlights</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -119,6 +120,7 @@ const otherVideos = [
         </div>
       </section>
 
+      <!-- More Adventures -->
       <section class="max-w-5xl mx-auto px-6 py-6 pb-16">
         <h2 class="text-xl font-bold mb-6 text-gray-200">More Adventures</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

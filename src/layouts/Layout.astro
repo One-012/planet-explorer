@@ -1,10 +1,10 @@
 <script>
-  // Thay thế bằng API Key của bạn từ Google Cloud Console
-  const API_KEY = 'YOUR_YOUTUBE_API_KEY'; 
+  // Sử dụng biến môi trường chuẩn public của Astro để chạy an toàn trên client
+  const API_KEY = import.meta.env.PUBLIC_YOUTUBE_API_KEY;  
 
   async function updateVideoViews() {
     const videoCards = document.querySelectorAll('[data-video-id]');
-    if (videoCards.length === 0) return;
+    if (videoCards.length === 0 || !API_KEY) return;
 
     // Lấy danh sách tất cả các Video ID trên trang, cách nhau bởi dấu phẩy
     const videoIds = Array.from(videoCards).map(card => card.getAttribute('data-video-id')).join(',');
@@ -21,14 +21,14 @@
           // Định dạng số lượt xem (Ví dụ: 15200 -> 15,200 views)
           const formattedViews = new Intl.NumberFormat().format(viewCount);
 
-          // Tìm card tương ứng và cập nhật số view lên giao diện
-          const targetCard = document.querySelector(`[data-video-id="${videoId}"]`);
-          if (targetCard) {
+          // Tìm các card tương ứng và cập nhật số view lên giao diện
+          const targetCards = document.querySelectorAll(`[data-video-id="${videoId}"]`);
+          targetCards.forEach(targetCard => {
             const viewElement = targetCard.querySelector('.view-count');
             if (viewElement) {
               viewElement.textContent = `${formattedViews} views`;
             }
-          }
+          });
         });
       }
     } catch (error) {
