@@ -1,0 +1,41 @@
+<script>
+  // Thay thế bằng API Key của bạn từ Google Cloud Console
+  const API_KEY = 'YOUR_YOUTUBE_API_KEY'; 
+
+  async function updateVideoViews() {
+    const videoCards = document.querySelectorAll('[data-video-id]');
+    if (videoCards.length === 0) return;
+
+    // Lấy danh sách tất cả các Video ID trên trang, cách nhau bởi dấu phẩy
+    const videoIds = Array.from(videoCards).map(card => card.getAttribute('data-video-id')).join(',');
+
+    try {
+      const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${API_KEY}`);
+      const data = await response.json();
+
+      if (data.items) {
+        data.items.forEach(item => {
+          const videoId = item.id;
+          const viewCount = parseInt(item.statistics.viewCount, 10);
+          
+          // Định dạng số lượt xem (Ví dụ: 15200 -> 15,200 views)
+          const formattedViews = new Intl.NumberFormat().format(viewCount);
+
+          // Tìm card tương ứng và cập nhật số view lên giao diện
+          const targetCard = document.querySelector(`[data-video-id="${videoId}"]`);
+          if (targetCard) {
+            const viewElement = targetCard.querySelector('.view-count');
+            if (viewElement) {
+              viewElement.textContent = `${formattedViews} views`;
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Không thể tải số liệu views từ YouTube:', error);
+    }
+  }
+
+  // Chạy hàm khi trang web được tải xong
+  document.addEventListener('DOMContentLoaded', updateVideoViews);
+</script>

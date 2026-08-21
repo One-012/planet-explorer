@@ -1,0 +1,36 @@
+---
+// src/components/VideoStats.astro
+interface Props {
+  videoId: string;
+}
+
+const { videoId } = Astro.props;
+const API_KEY = import.meta.env.YOUTUBE_API_KEY;
+
+let viewCount = "Loading...";
+
+try {
+  const url = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${API_KEY}`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.items && data.items.length > 0) {
+    const rawViews = parseInt(data.items[0].statistics.viewCount, 10);
+    // Format số ví dụ: 1.2M hoặc 500k
+    if (rawViews >= 1000000) {
+        viewCount = (rawViews / 1000000).toFixed(1) + "M views";
+    } else if (rawViews >= 1000) {
+        viewCount = (rawViews / 1000).toFixed(0) + "K views";
+    } else {
+        viewCount = rawViews + " views";
+    }
+  }
+} catch (error) {
+  console.error("Lỗi lấy view:", error);
+  viewCount = "View";
+}
+---
+
+<span class="text-red-400 font-bold bg-red-950/40 px-2.5 py-1 rounded-md border border-red-900/50">
+  {viewCount}
+</span>
